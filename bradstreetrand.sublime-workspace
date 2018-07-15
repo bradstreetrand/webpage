@@ -11,10 +11,21 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 5,
+				"buffer_size": 8684,
 				"encoding": "UTF-8",
-				"line_ending": "Unix",
+				"line_ending": "Windows",
 				"name": "html"
+			}
+		},
+		{
+			"contents": "",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows",
+				"name": "*git-status*: webpage",
+				"read_only": true,
+				"scratch": true
 			}
 		}
 	],
@@ -29,6 +40,10 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"git sta",
+				"Git: Status"
+			],
 			[
 				"install",
 				"Package Control: Install Package"
@@ -49,6 +64,8 @@
 		"height": 150.0,
 		"history":
 		[
+			"import os",
+			"import os; print os.getenv('PATH')",
 			"import urllib.request,os,hashlib; h = '6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
 		]
 	},
@@ -61,8 +78,14 @@
 		"side_bar_visible": false,
 		"status_bar_visible": false
 	},
+	"expanded_folders":
+	[
+		"/C/Users/Bradstreet/myproject/webpage"
+	],
 	"file_history":
 	[
+		"/C/Users/Bradstreet/AppData/Roaming/Sublime Text 3/Packages/User/SublimeGit.sublime-settings",
+		"/C/Users/Bradstreet/AppData/Roaming/Sublime Text 3/Packages/SublimeGit/SublimeGit.sublime-settings",
 		"/Applications/MAMP/htdocs/Rewards/rewardlog.php",
 		"/Applications/MAMP/htdocs/Rewards/rewards.php",
 		"/Users/brand/Desktop/Rewards/rewards.html",
@@ -101,7 +124,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -110,15 +133,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5,
+						"buffer_size": 8684,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5,
-								5
+								831,
+								831
 							]
 						],
 						"settings":
@@ -199,7 +222,43 @@
 								"bh_unmatched_close",
 								"bh_unmatched_content"
 							],
-							"syntax": "Packages/HTML/HTML.sublime-syntax"
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"__vi_external_disable": true,
+							"draw_white_space": "none",
+							"git_repo": "C:\\Users\\Bradstreet\\myproject\\webpage",
+							"git_status": true,
+							"git_view": "status",
+							"syntax": "Packages/SublimeGit/syntax/SublimeGit Status.tmLanguage",
+							"translate_tabs_to_spaces": false,
+							"word_wrap": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
