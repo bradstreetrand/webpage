@@ -1,0 +1,21 @@
+
+
+---	Adding Books to Database
+	---	Connect to Amazon Database: Use API
+		---	Sign up for Amazon API use
+		--	Check code
+		--	Test connection
+	--	Create interface for easy adding
+		--	Determine needed input
+		-	Stylize
+	-	Add books to database
+
+--	Student View
+	--	Write mySQL queries
+	--	Display results
+	-	Stylize	
+
+-	Parent View
+	-	Write mySQL queries
+	-	Display results
+	-	Stylize
