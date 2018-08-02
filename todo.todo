@@ -11,6 +11,8 @@
 		-	Create User account for AWS: For security purposes a user without root access is needed
 				Create an IAM User details here - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html
 				I do not know how to assign privileges - there are too many!
+		-	Determine where to store AWS credentials: How to best implement the ids
+				Find more here - https://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html
 		--	Check code
 		--	Test connection
 	--	Create interface for easy adding
