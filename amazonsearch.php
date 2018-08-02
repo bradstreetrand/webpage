@@ -16,8 +16,8 @@
    }
 
 //Enter your IDs
-define("Access_Key_ID", "AKIAIUSDVO3X7D4QCRAA");
-define("Associate_tag", "bradstreetran-20");
+define("Access_Key_ID", "");
+define("Associate_tag", "");
 
 //Set up the operation in the request
 function ItemSearch($Keywords){
@@ -38,7 +38,7 @@ $request=
    . "&Operation=" . $Operation
    . "&SearchIndex=" . $SearchIndex
    . "&Keywords=" . $Keywords
-   . "&Signature=" . "npC7ZlZQftckw1e5NXv2QDEtgpGXdGiJxjBx6ni0";
+   . "&Signature=" . "";
  //  . "&ResponseGroup=" . $ResponseGroup;
 
 //Catch the response in the $response object
