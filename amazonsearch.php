@@ -6,17 +6,18 @@
       $author = $_POST['author'];
 
       if(!$isbn && !$title) {
-         $errorMsg = "Please enter an ISBN number or Title and Author"
+         $errorMsg = "Please enter an ISBN number or Title and Author";
       } elseif (isset($isbn)) {
-         $Keywords = $isbn
+         $Keywords = $isbn;
       } else {
-         $Keywords = $title . " " .$author
+         $Keywords = $title . " " .$author;
+         ItemSearch($Keywords);
       }
    }
 
 //Enter your IDs
-define("Access_Key_ID", "[Your Access Key ID]");
-define("Associate_tag", "[Your Associate Tag ID]");
+define("Access_Key_ID", "AKIAIUSDVO3X7D4QCRAA");
+define("Associate_tag", "bradstreetran-20");
 
 //Set up the operation in the request
 function ItemSearch($Keywords){
@@ -37,7 +38,7 @@ $request=
    . "&Operation=" . $Operation
    . "&SearchIndex=" . $SearchIndex
    . "&Keywords=" . $Keywords
-   . "&Signature=" . [Request Signature];
+   . "&Signature=" . "npC7ZlZQftckw1e5NXv2QDEtgpGXdGiJxjBx6ni0";
  //  . "&ResponseGroup=" . $ResponseGroup;
 
 //Catch the response in the $response object
@@ -60,9 +61,17 @@ printSearchResults($parsed_xml, $SearchIndex);
 </head>
 <body>
 
-<form method="POST" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" accept-charset="UTF-8">
-   <input type="text" size="48" name="isbn" value="<?PHP if(isset($_POST['isbn'])) echo htmlspecialchars($_POST['isbn']); ?>">
-   <input type="text" size="48" name="title" value="<?PHP if(isset($_POST['title'])) echo htmlspecialchars($_POST['title']); ?>">
-   <input type="text" size="48" name="author" value="<?PHP if(isset($_POST['author'])) echo htmlspecialchars($_POST['author']); ?>">
-   <input type="submit" name="SearchAmazon" value="Search">
+   <form method="POST" action="<?PHP echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" accept-charset="UTF-8">
+      <input type="text" size="48" name="isbn" value="<?PHP if(isset($_POST['isbn'])) echo htmlspecialchars($_POST['isbn']); ?>">
+      <input type="text" size="48" name="title" value="<?PHP if(isset($_POST['title'])) echo htmlspecialchars($_POST['title']); ?>">
+      <input type="text" size="48" name="author" value="<?PHP if(isset($_POST['author'])) echo htmlspecialchars($_POST['author']); ?>">
+      <input type="submit" name="SearchAmazon" value="Search">
+   </form>
+
+   <?php
+      echo $Keywords;
+
+   ?>
+</body>
+</html>
 

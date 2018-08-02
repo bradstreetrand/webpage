@@ -2,7 +2,15 @@
 
 ---	Adding Books to Database
 	---	Connect to Amazon Database: Use API
-		---	Sign up for Amazon API use
+		+---	Sign up for Amazon API use
+		---	Follow tutorial for connecting to Amazon Affiliate program: https://www.patchesoft.com/amazon-affiliate-api-php `Uses the PHP cURL library`	
+				Current code on page is from AWS support pages - it was altered slightly by me. 
+				Original code here- https://docs.aws.amazon.com/AWSECommerceService/latest/GSG/ImplementinganA2SRequest.html
+				Item search examples here- https://docs.aws.amazon.com/AWSECommerceService/latest/DG/ItemSearch.html
+				Security credentials found here: https://console.aws.amazon.com/iam/home?region=us-east-2#/security_credential
+		-	Create User account for AWS: For security purposes a user without root access is needed
+				Create an IAM User details here - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html
+				I do not know how to assign privileges - there are too many!
 		--	Check code
 		--	Test connection
 	--	Create interface for easy adding
