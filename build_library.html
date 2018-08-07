@@ -37,12 +37,14 @@ if(!isset($_SESSION['username']) || empty($_SESSION['username'])){
 		<input type="button" name="authorSearch" onclick="authorTitleSearchGB('inauthor:' + document.getElementById('authorInput').value + '&intitle' + document.getElementById('titleInput').value )" value="Search by Author & Title"/>
 	</div>
 </div>
-<div id="searchResults0">
-	<p>Results will appear here.</p>
+<div class="grid-x gri-margin-x grid-padding-x">
+	<div id="searchResults0" class="cell medium-6 large-4 ">
+		<p>Results will appear here.</p>
+	</div>
+	<div id="searchResults1" class="cell medium-6 large-4 "></div>
+	<div id="searchResults2" class="cell medium-6 large-4 "></div>
 </div>
-<div id="searchResults1"></div>
-<div id="searchResults2"></div>
-<div id="test"></div>
+
 
 	<script type="text/javascript">
 		"https://www.googleapis.com/books/v1/volumes?q="
@@ -74,14 +76,17 @@ if(!isset($_SESSION['username']) || empty($_SESSION['username'])){
 		function displayTest(obj){
 			for (var i = 0; i < 3; i++) {
 				if (typeof obj.items[i]["volumeInfo"]["subTitle"] != 'undefined' ) {
-				var subtitle = obj.items[i]["volumeInfo"]["subTitle"] + " </br>";
-				} else {var subtitle ="";}
+				var subtitle = "<small>" + obj.items[i]["volumeInfo"]["subTitle"] + " </small>";
+				} else {var subtitle ="";};
 				
 				document.getElementById("searchResults" + i.toString()).innerHTML = 
-				obj.items[i]["volumeInfo"]["title"] + " </br>" +
-				subtitle +
-				obj.items[i]["volumeInfo"]["authors"][i] + " </br>" + 
-				obj.items[i]["volumeInfo"]["description"] + "</br></br>"
+				"<div class='resultItem'><div class='media-object'><div class='media-object-section' <div class='thumbnail'><img src=" +
+				obj.items[i]["volumeInfo"]["imageLinks"]["thumbnail"] + "></div><div class='media-object-section text-center'> <h2>" +
+				obj.items[i]["volumeInfo"]["title"] +
+				subtitle + " </h2><h3 class='subheader'>" +
+				obj.items[i]["volumeInfo"]["authors"][0] + " </h3></div></div><div>" + 
+				obj.items[i]["volumeInfo"]["description"] + 
+				"</div></div>" 
 				;				
 			}
 		}

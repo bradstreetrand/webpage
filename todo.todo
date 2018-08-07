@@ -26,15 +26,19 @@
 		.---	Separate ISBN search field from Title and Author
 		.--	set maxResults field while searching
 
-	---	Create interface for adding book to database
-		---	Design form for inputting search terms
+	.---	Create interface for adding book to database
+		.---	Design form for inputting search terms
 			---	Use AJAX: See tutorial here - https://www.tutorialspoint.com/php/php_and_ajax.htm
-		---	Separate results: Example found here - https://jonathanmh.com/searching-google-books-api-php-quickstart/
+		.---	Separate results: Example found here - https://jonathanmh.com/searching-google-books-api-php-quickstart/
 			--	Provide way to choose best result
 			--	How to display choices
-		-	Stylize
+		.-	Stylize
 	---	Add books to database
 		---	Determine attributes to save to database: Basic info (title, author) and selfLink in order to see more info?
+		---	Create Button on interface
+		---	Write script to save items into database
+		---	Create a success notification
+			- Go to library link
 	-	Separate volumeInfo category: For possible use with searching or linking? `Unsure`
 			-	title
 			-	authors
