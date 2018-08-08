@@ -34,21 +34,24 @@
 			--	How to display choices
 		.-	Stylize
 	---	Add books to database
-		---	Determine attributes to save to database: Basic info (title, author) and selfLink in order to see more info?
-		---	Create Button on interface
-		---	Write script to save items into database
-		---	Create a success notification
+		.---	Determine attributes to save to database: Basic info (title, author) and selfLink in order to see more info?
+		.---	Create Button on interface
+		.---	Write script to save items into database
+		.---	Create a success notification
 			- Go to library link
+		---	Check for duplicates within database
+			---	Select items from database
+			---	Return option for creating entry or increasing copies
 	-	Separate volumeInfo category: For possible use with searching or linking? `Unsure`
-			-	title
-			-	authors
+			.-	title
+			.-	authors
 			-	subtitle
-			-	Description
+			.-	Description
 			-	pageCount
 			-	categories
 			-	publishedDate
 			-	maturityRating
-			-	imageLinks
+			.-	imageLinks
 
 --	Student View
 	--	Write mySQL queries
