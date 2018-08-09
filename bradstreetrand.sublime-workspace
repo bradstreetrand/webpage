@@ -3,6 +3,78 @@
 	{
 		"selected_items":
 		[
+			[
+				"volume",
+				"volumeInfo"
+			],
+			[
+				"isbnSearch",
+				"isbnSearchGB"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"for",
+				"for\tfor …"
+			],
+			[
+				"book",
+				"bookLookupArray"
+			],
+			[
+				"boo",
+				"bookArray"
+			],
+			[
+				"cer",
+				"cErrno"
+			],
+			[
+				"cerr",
+				"cError"
+			],
+			[
+				"curl",
+				"curl_error"
+			],
+			[
+				"print",
+				"print_r"
+			],
+			[
+				"res",
+				"result"
+			],
+			[
+				"curl_se",
+				"curl_setopt"
+			],
+			[
+				"htt",
+				"http_get"
+			],
+			[
+				"key",
+				"Keywords"
+			],
+			[
+				"di",
+				"div\tTag"
+			],
+			[
+				"root",
+				"root"
+			],
+			[
+				"con",
+				"contact"
+			],
+			[
+				"margin",
+				"margin-top\tproperty"
+			]
 		]
 	},
 	"buffers":
@@ -11,21 +83,85 @@
 			"file": "index.html",
 			"settings":
 			{
-				"buffer_size": 8684,
+				"buffer_size": 8659,
 				"encoding": "UTF-8",
-				"line_ending": "Windows",
+				"line_ending": "Unix",
 				"name": "html"
 			}
 		},
 		{
-			"contents": "",
+			"file": "students.php",
 			"settings":
 			{
-				"buffer_size": 0,
+				"buffer_size": 5526,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "register_students.php",
+			"settings":
+			{
+				"buffer_size": 5189,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "login.php",
+			"settings":
+			{
+				"buffer_size": 4211,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<?php\n// Initialize the session\nsession_start();\n \n// If session variable is not set it will redirect to login page\nif(!isset($_SESSION['username']) || empty($_SESSION['username'])){\n  header(\"location: login.php\");\n  exit;\n}\n\n\n\n\n?>\n \n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Welcome</title>\n    <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css\">\n    <style type=\"text/css\">\n        body{ font: 14px sans-serif; text-align: center; }\n    </style>\n</head>\n<body>\n    <div class=\"page-header\">\n        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION['username']); ?></b>. Welcome to our site.</h1>\n    </div>\n    <p><a href=\"logout.php\" class=\"btn btn-danger\">Sign Out of Your Account</a></p>\n    <?php\n     // Attempt select query execution\n                    $sql = \"SELECT * FROM employees\";\n                    if($result = mysqli_query($link, $sql)){\n                        if(mysqli_num_rows($result) > 0){\n                            echo \"<table class='table table-bordered table-striped'>\";\n                                echo \"<thead>\";\n                                    echo \"<tr>\";\n                                        echo \"<th>#</th>\";\n                                        echo \"<th>Name</th>\";\n                                        echo \"<th>Address</th>\";\n                                        echo \"<th>Salary</th>\";\n                                        echo \"<th>Action</th>\";\n                                    echo \"</tr>\";\n                                echo \"</thead>\";\n                                echo \"<tbody>\";\n                                while($row = mysqli_fetch_array($result)){\n                                    echo \"<tr>\";\n                                        echo \"<td>\" . $row['id'] . \"</td>\";\n                                        echo \"<td>\" . $row['name'] . \"</td>\";\n                                        echo \"<td>\" . $row['address'] . \"</td>\";\n                                        echo \"<td>\" . $row['salary'] . \"</td>\";\n                                        echo \"<td>\";\n                                            echo \"<a href='read.php?id=\". $row['id'] .\"' title='View Record' data-toggle='tooltip'><span class='glyphicon glyphicon-eye-open'></span></a>\";\n                                            echo \"<a href='update.php?id=\". $row['id'] .\"' title='Update Record' data-toggle='tooltip'><span class='glyphicon glyphicon-pencil'></span></a>\";\n                                            echo \"<a href='delete.php?id=\". $row['id'] .\"' title='Delete Record' data-toggle='tooltip'><span class='glyphicon glyphicon-trash'></span></a>\";\n                                        echo \"</td>\";\n                                    echo \"</tr>\";\n                                }\n                                echo \"</tbody>\";                            \n                            echo \"</table>\";\n                            // Free result set\n                            mysqli_free_result($result);\n                        } else{\n                            echo \"<p class='lead'><em>No records were found.</em></p>\";\n                        }\n                    } else{\n                        echo \"ERROR: Could not able to execute $sql. \" . mysqli_error($link);\n                    }\n \n                    // Close connection\n                    mysqli_close($link);\n                    ?>\n\n\n</body>\n</html>",
+			"file": "welcome.php",
+			"file_size": 786,
+			"file_write_time": 131773492777533465,
+			"settings":
+			{
+				"buffer_size": 3478,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Remote:   origin @ https://github.com/bradstreetrand/webpage.git\nLocal:    Exploration C:\\wamp64\\www\\myproject\\webpage\nHead:     21488e5 Cleaned up build-library code using loop\n\n\nUnstaged changes:\n\tModified   todo.todo\n\nStaged changes:\n\tModified   bradstreetrand.sublime-workspace\n\tModified   build_library.html\n\n\n# Movement:\n#    r = refresh status\n#    1-5 = jump to section\n#    n = next item, N = next section\n#    p = previous item, P = previous section\n#\n# Staging:\n#    s = stage file/section, S = stage all unstaged files\n#    ctrl+shift+s = stage all unstaged and untracked files\n#    u = unstage file/section, U = unstage all files\n#    backspace = discard file/section, shift+backspace = discard everything\n#\n# Commit:\n#    c = commit, C = commit -a (add unstaged)\n#    ctrl+shift+c = commit --amend (amend previous commit)\n#\n# Other:\n#    i = ignore file, I = ignore pattern\n#    enter = open file\n#    d = view diff\n#\n# Stashes:\n#    a = apply stash, A = pop stash\n#    z = create stash, Z = create stash including untracked files\n#    backspace = discard stash",
+			"settings":
+			{
+				"buffer_size": 1075,
 				"line_ending": "Windows",
 				"name": "*git-status*: webpage",
 				"read_only": true,
 				"scratch": true
+			}
+		},
+		{
+			"file": "todo.todo",
+			"settings":
+			{
+				"buffer_size": 2869,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Bradstreet/AppData/Roaming/Sublime Text 3/Packages/ToDone/readme.todo",
+			"settings":
+			{
+				"buffer_size": 3511,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "build_library.html",
+			"settings":
+			{
+				"buffer_size": 3584,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
 			}
 		}
 	],
@@ -41,12 +177,108 @@
 		"selected_items":
 		[
 			[
-				"git sta",
+				"gits",
 				"Git: Status"
+			],
+			[
+				"gitpu",
+				"Git: Push"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"pa",
+				"Package Control: Remove Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
 			],
 			[
 				"install",
 				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"note",
+				"Notes: Inbox"
+			],
+			[
+				"gitp",
+				"Git: Push"
+			],
+			[
+				"me",
+				"Git: Merge"
+			],
+			[
+				"gitst",
+				"Git: Status"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"notes",
+				"Notes: List…"
+			],
+			[
+				"package contro\\l",
+				"Package Control: Upgrade/Overwrite All Packages"
+			],
+			[
+				"check",
+				"Git: Checkout"
+			],
+			[
+				"re",
+				"Git: Remote"
+			],
+			[
+				"gitch",
+				"Git: Checkout Remote Branch"
+			],
+			[
+				"git p",
+				"Git: Pull"
+			],
+			[
+				"git che",
+				"Git: Checkout Remote Branch"
+			],
+			[
+				"gitf",
+				"Git: Fetch"
+			],
+			[
+				"git pull",
+				"Git: Pull"
+			],
+			[
+				"git rem",
+				"Git: Add Remote"
+			],
+			[
+				"git",
+				"Git: Init"
+			],
+			[
+				"git s",
+				"Git: Status"
+			],
+			[
+				"gitc",
+				"Git: Checkout New Branch"
+			],
+			[
+				"git sta",
+				"Git: Status"
 			],
 			[
 				"inst",
@@ -80,10 +312,32 @@
 	},
 	"expanded_folders":
 	[
-		"/C/Users/Bradstreet/myproject/webpage"
+		"/C/wamp64/www/myproject/webpage",
+		"/C/wamp64/www/myproject/webpage/css"
 	],
 	"file_history":
 	[
+		"/C/wamp64/www/myproject/webpage/book-lookup.php",
+		"/C/Users/Bradstreet/Downloads/bradstreetrand-212213-234a3a4b9105.json",
+		"/C/Users/Bradstreet/AppData/Roaming/Sublime Text 3/Packages/ToDone/readme.todo",
+		"/C/wamp64/www/myproject/webpage/amazonsearch.php",
+		"/C/wamp64/bin/apache/apache2.4.33/bin/php.ini",
+		"/C/wamp64/www/ca-bundle.crt",
+		"/C/wamp64/www/myproject/webpage/vendor/google-api-php-client-2.2.2/vendor/guzzlehttp/guzzle/src/Handler/CurlFactory.php",
+		"/C/wamp64/www/myproject/webpage/vendor/google-api-php-client-2.2.2/vendor/guzzlehttp/guzzle/src/Exception/RequestException.php",
+		"/C/Users/Bradstreet/AppData/Roaming/Sublime Text 3/Packages/User/GutterColor.sublime-settings",
+		"/C/Users/Bradstreet/Downloads/index.php",
+		"/C/Users/Bradstreet/Dropbox/Notes/.brain/Inbox.note",
+		"/C/wamp64/www/myproject/webpage/amazonresults.php",
+		"/C/wamp64/www/myproject/webpage/logout.php",
+		"/C/wamp64/www/myproject/webpage/css/app.css",
+		"/C/Users/Bradstreet/Dropbox/Notes/Next Step.note",
+		"/C/wamp64/www/myproject/webpage/config.php",
+		"/C/wamp64/www/myproject/webpage/about.html",
+		"/C/wamp64/www/myproject/webpage/_navigationmenu.html",
+		"/C/wamp64/apps/phpmyadmin4.7.9/config.inc.php",
+		"/C/wamp64/apps/phpmyadmin4.7.9/mysql-init.txt",
+		"/C/wamp64/www/myproject/webpage/contact.html",
 		"/C/Users/Bradstreet/AppData/Roaming/Sublime Text 3/Packages/User/SublimeGit.sublime-settings",
 		"/C/Users/Bradstreet/AppData/Roaming/Sublime Text 3/Packages/SublimeGit/SublimeGit.sublime-settings",
 		"/Applications/MAMP/htdocs/Rewards/rewardlog.php",
@@ -93,7 +347,7 @@
 	],
 	"find":
 	{
-		"height": 0.0
+		"height": 25.0
 	},
 	"find_in_files":
 	{
@@ -107,6 +361,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"ca cer"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -124,7 +379,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 5,
 			"sheets":
 			[
 				{
@@ -133,19 +388,22 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 8684,
+						"buffer_size": 8659,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								831,
-								831
+								2175,
+								2175
 							]
 						],
 						"settings":
 						{
+							"SL.13.region_keys":
+							[
+							],
 							"auto_name": "html",
 							"bracket_highlighter.busy": false,
 							"bracket_highlighter.clone": -1,
@@ -227,6 +485,144 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
+						"translation.y": 384.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "students.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5526,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								659,
+								659
+							]
+						],
+						"settings":
+						{
+							"SL.14.region_keys":
+							[
+							],
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "register_students.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5189,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5189,
+								5181
+							]
+						],
+						"settings":
+						{
+							"SL.15.region_keys":
+							[
+							],
+							"SL.17.region_keys":
+							[
+							],
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "login.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4211,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2756,
+								0
+							]
+						],
+						"settings":
+						{
+							"SL.18.region_keys":
+							[
+							],
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "welcome.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3478,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								226,
+								0
+							]
+						],
+						"settings":
+						{
+							"SL.17.region_keys":
+							[
+							],
+							"SL.19.region_keys":
+							[
+							],
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
@@ -234,26 +630,27 @@
 					"type": "text"
 				},
 				{
-					"buffer": 1,
+					"buffer": 5,
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 0,
+						"buffer_size": 1075,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								198,
+								198
 							]
 						],
 						"settings":
 						{
 							"__vi_external_disable": true,
+							"default_dir": "C:\\wamp64\\www\\myproject\\webpage",
 							"draw_white_space": "none",
-							"git_repo": "C:\\Users\\Bradstreet\\myproject\\webpage",
+							"git_repo": "C:\\wamp64\\www\\myproject\\webpage",
 							"git_status": true,
 							"git_view": "status",
 							"syntax": "Packages/SublimeGit/syntax/SublimeGit Status.tmLanguage",
@@ -266,17 +663,111 @@
 					},
 					"stack_index": 0,
 					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "todo.todo",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2869,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2500,
+								2500
+							]
+						],
+						"settings":
+						{
+							"SL.24.region_keys":
+							[
+							],
+							"syntax": "Packages/ToDone/ToDone.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/C/Users/Bradstreet/AppData/Roaming/Sublime Text 3/Packages/ToDone/readme.todo",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3511,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/ToDone/ToDone.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1104.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "build_library.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3584,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1594,
+								1594
+							]
+						],
+						"settings":
+						{
+							"SL.21.region_keys":
+							[
+							],
+							"SL.40.region_keys":
+							[
+							],
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 390.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
 				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 0.0
+		"height": 25.0
 	},
 	"input":
 	{
-		"height": 0.0
+		"height": 37.0
 	},
 	"layout":
 	{
@@ -309,11 +800,43 @@
 	{
 		"height": 0.0
 	},
+	"output.git-checkout":
+	{
+		"height": 114.0
+	},
+	"output.git-commit":
+	{
+		"height": 114.0
+	},
+	"output.git-fetch":
+	{
+		"height": 114.0
+	},
+	"output.git-init":
+	{
+		"height": 114.0
+	},
+	"output.git-pull":
+	{
+		"height": 114.0
+	},
+	"output.git-push":
+	{
+		"height": 114.0
+	},
+	"output.git-remote":
+	{
+		"height": 114.0
+	},
+	"output.jotter":
+	{
+		"height": 114.0
+	},
 	"pinned_build_system": "",
 	"project": "bradstreetrand.sublime-project",
 	"replace":
 	{
-		"height": 0.0
+		"height": 46.0
 	},
 	"save_all_on_build": true,
 	"select_file":

@@ -1,0 +1,64 @@
+
+
+---	Adding Books to Database
+	.---	Connect to Amazon Database: Use API
+		.---	Sign up for Amazon API use
+		.---	Follow tutorial for connecting to Amazon Affiliate program: https://www.patchesoft.com/amazon-affiliate-api-php `Uses the PHP cURL library`	
+				Current code on page is from AWS support pages - it was altered slightly by me. 
+				Original code here- https://docs.aws.amazon.com/AWSECommerceService/latest/GSG/ImplementinganA2SRequest.html
+				Item search examples here- https://docs.aws.amazon.com/AWSECommerceService/latest/DG/ItemSearch.html
+				Security credentials found here: https://console.aws.amazon.com/iam/home?region=us-east-2#/security_credential
+		.-	Create User account for AWS: For security purposes a user without root access is needed
+				Create an IAM User details here - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html
+				I do not know how to assign privileges - there are too many!
+		.-	Determine where to store AWS credentials: How to best implement the ids
+				Find more here - https://docs.aws.amazon.com/general/latest/gr/aws-access-keys-best-practices.html
+		--	Check code
+		--	Test connection
+	.---	Add code to filter out relevant information from the JSON result
+		.---	volumeInfo: API information found here - https://developers.google.com/books/docs/v1/reference/volumes
+		.--	selfLink: Specific google books api link
+		.---	Narrow results to first three
+
+	.---	Adjust function to have user input set search terms
+		.----	Use AJAX to send GET request: AJAX tutorial here - https://www.w3schools.com/xml/ajax_xmlhttprequest_create.asp - & here - https://www.tutorialspoint.com/ajax/ajax_in_action.htm
+		.----	Use javascript to interpret JSON string rather than the php file
+		.---	Separate ISBN search field from Title and Author
+		.--	set maxResults field while searching
+
+	.---	Create interface for adding book to database
+		.---	Design form for inputting search terms
+			---	Use AJAX: See tutorial here - https://www.tutorialspoint.com/php/php_and_ajax.htm
+		.---	Separate results: Example found here - https://jonathanmh.com/searching-google-books-api-php-quickstart/
+			--	Provide way to choose best result
+			--	How to display choices
+		.-	Stylize
+	---	Add books to database
+		.---	Determine attributes to save to database: Basic info (title, author) and selfLink in order to see more info?
+		.---	Create Button on interface
+		.---	Write script to save items into database
+		.---	Create a success notification
+			- Go to library link
+		---	Check for duplicates within database
+			---	Select items from database
+			---	Return option for creating entry or increasing copies
+	-	Separate volumeInfo category: For possible use with searching or linking? `Unsure`
+			.-	title
+			.-	authors
+			-	subtitle
+			.-	Description
+			-	pageCount
+			-	categories
+			-	publishedDate
+			-	maturityRating
+			.-	imageLinks
+
+--	Student View
+	--	Write mySQL queries
+	--	Display results
+	-	Stylize	
+
+-	Parent View
+	-	Write mySQL queries
+	-	Display results
+	-	Stylize
