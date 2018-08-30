@@ -39,8 +39,12 @@
 
 	<script type="text/javascript">
 		"https://www.googleapis.com/books/v1/volumes?q="
+		// Defines global variables
 		var bookObj;
 		var jsonBookObj;
+		
+		// Searches Google Books by ISBN number
+		// Called from input 'isbnSearch'
 		function isbnSearchGB(url) {
 			var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange = function() {
@@ -54,11 +58,15 @@
 			xhttp.open("GET", "https://www.googleapis.com/books/v1/volumes?q=" + url + '&maxResults=5', true);
 			xhttp.send();
 		}
+
+		// Searches Google Books by Author and Title
+		// Called from input 'authorSearch'
 		function authorTitleSearchGB(author, title) {
 			var url = "intitle:" + title + "+inauthor:" + author;
 			var xhttp = new XMLHttpRequest();
 			xhttp.onreadystatechange = function() {
 				if (this.readyState == 4 && this.status == 200) {
+					jsonBookObj = this.responseText
 					bookObj = JSON.parse(this.responseText)
 					var info = bookObj.items[0]["volumeInfo"]
 					displayTest(bookObj);
@@ -67,6 +75,9 @@
 			xhttp.open("GET", "https://www.googleapis.com/books/v1/volumes?q=" + url + '&maxResults=5' , true);
 			xhttp.send();
 		}
+
+		// Inputs the results from Google Books and surrounding html into the document
+		// Called by isbnSearchGB() and authorTitleSearchGB()
 		function displayTest(bookObj){
 			for (var i = 0; i < 5; i++) {
 				if (typeof bookObj.items[i]["volumeInfo"]["subTitle"] != 'undefined' ) {
@@ -78,35 +89,42 @@
 				bookObj.items[i]["volumeInfo"]["imageLinks"]["thumbnail"] + "></div><div class='media-object-section text-center'> <h2>" +
 				bookObj.items[i]["volumeInfo"]["title"] +
 				subtitle + " </h2><h3 class='subheader'>" +
-				bookObj.items[i]["volumeInfo"]["authors"][0] + " </h3></div></div><div><input type='button' name='addToDatabase' onclick='addToDatabase(" + i + ")' value='Add to Database'/> </div><div>" + 
+				bookObj.items[i]["volumeInfo"]["authors"][0] + " </h3></div></div><div><input type='button' name='addToLibrary' onclick='addToDatabase(" + i + ")' value='Add to Database'/> </div><div>" + 
 				bookObj.items[i]["volumeInfo"]["description"] + 
 				bookObj.items[i]["volumeInfo"]["industryIdentifiers"][0]["identifier"] +
-				"</div></div>" 
+				"</div><button class='button' id='bookcount' onclick='bookCountLookup( &quot;" + bookObj.items[i]["volumeInfo"]["authors"][0] + "&quot;, &quot;" + bookObj.items[i]["volumeInfo"]["title"] + "&quot;, &quot;" + bookObj.items[i]["volumeInfo"]["industryIdentifiers"][0]["identifier"] + "&quot; )'>Get Count</button> </div>" 
 				;				
 			}
 		}
-		function addToDatabase(i) {
-			
-		/*	var xmlhttp = new XMLHttpRequest();
-			xmlhttp.onreadystatechange = function(){
-				if (this.readyState == 4 && this.status == 200) {
-					document.getElementById("messageBlock").innerHTML = this.responseText;
-				}
-			};
-			var bookInfo = JSON.stingify(bookObj.items[i]);
-			xmlhttp.open("POST","addToLibrary.php",true);
-			xmlhttp.setRequestHeader("Content-type", "jsonString");
-			xmlhttp.send("thummbnail=" + bookInfo);
-		*/
-		//var jsonString = JSON.stringify(bookObj);
-		$.ajax({
-			type: "POST",
-			url: "addToLibrary.php",
-			data: {bookObj : jsonBookObj},
-			success: function(result){
-				$("#messageBlock").html(result)			}
-		});
 
+		// Adds result to database or increases the copies by 1
+		// Sends POST request to addToLibrary.php
+		// Called from input 'addToDatabase'
+		function addToDatabase(i) {
+			data = bookObj.items[i];
+			$.ajax({
+				type: "POST",
+				url: "addToLibrary.php",
+				data: {bookObj: data},
+				success: function(result){
+					$("#messageBlock").html(result)			}
+			});
+
+		}
+
+
+		// Looks up number of copies currently in library
+		function bookCountLookup(author, title, isbn) {
+			countAuthor = author;
+			countTitle = title;
+			countIsbn = isbn;
+			$.ajax({
+				type: "POST",
+				url: "bookCountLookup.php",
+				data: {author: countAuthor, title : countTitle, isbn : countIsbn},
+				success: function(result){
+					$("#messageBlock").html("Number of copies: " + result)			}
+			});
 		}
 		
 	</script>
