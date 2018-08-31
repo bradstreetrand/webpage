@@ -92,13 +92,13 @@
 				bookObj.items[i]["volumeInfo"]["authors"][0] + " </h3></div></div><div><input type='button' name='addToLibrary' onclick='addToDatabase(" + i + ")' value='Add to Database'/> </div><div>" + 
 				bookObj.items[i]["volumeInfo"]["description"] + 
 				bookObj.items[i]["volumeInfo"]["industryIdentifiers"][0]["identifier"] +
-				"</div><button class='button' id='bookcount' onclick='bookCountLookup( &quot;" + bookObj.items[i]["volumeInfo"]["authors"][0] + "&quot;, &quot;" + bookObj.items[i]["volumeInfo"]["title"] + "&quot;, &quot;" + bookObj.items[i]["volumeInfo"]["industryIdentifiers"][0]["identifier"] + "&quot; )'>Get Count</button> </div>" 
+				"</div><button class='button secondary' id='bookcount' onclick='bookCountLookup( &quot;" + bookObj.items[i]["volumeInfo"]["authors"][0] + "&quot;, &quot;" + bookObj.items[i]["volumeInfo"]["title"] + "&quot;, &quot;" + bookObj.items[i]["volumeInfo"]["industryIdentifiers"][0]["identifier"] + "&quot; )'>Get Count</button> </div> <button class='button warning' id='subtractBook' onclick='subtractBook( &quot;" + bookObj.items[i]["volumeInfo"]["authors"][0] + "&quot;, &quot;" + bookObj.items[i]["volumeInfo"]["title"] + "&quot;, &quot;" + bookObj.items[i]["volumeInfo"]["industryIdentifiers"][0]["identifier"] + "&quot; )'>Subtract 1 Copy</button>" 
 				;				
 			}
 		}
 
 		// Adds result to database or increases the copies by 1
-		// Sends POST request to addToLibrary.php
+		// Sends POST request to addToLibrary.php - returns string
 		// Called from input 'addToDatabase'
 		function addToDatabase(i) {
 			data = bookObj.items[i];
@@ -114,6 +114,8 @@
 
 
 		// Looks up number of copies currently in library
+		// Sends POST request to bookCountLookup.php - returns numeric string
+		// Called from button created by displayTest()
 		function bookCountLookup(author, title, isbn) {
 			countAuthor = author;
 			countTitle = title;
@@ -125,6 +127,23 @@
 				success: function(result){
 					$("#messageBlock").html("Number of copies: " + result)			}
 			});
+		}
+
+		// Decreases the copies of a book by 1
+		// Sends POST request to subtractBook.php
+		// Called from button created by displayTest()
+		function subtractBook(author, title, isbn) {
+			subtractAuthor = author;
+			subtractTitle = title;
+			subtractIsbn = isbn;
+			$.ajax({
+				type: "POST",
+				url: "subtractBook.php",
+				data: {author: subtractAuthor, title : subtractTitle, isbn : subtractIsbn},
+				success: function(result){
+					$("#messageBlock").html(result)			}
+			});
+
 		}
 		
 	</script>

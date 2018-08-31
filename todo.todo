@@ -1,6 +1,6 @@
 
 
----	Adding Books to Database
+.---	Adding Books to Database
 	.---	Connect to Amazon Database: Use API
 		.---	Sign up for Amazon API use
 		.---	Follow tutorial for connecting to Amazon Affiliate program: https://www.patchesoft.com/amazon-affiliate-api-php `Uses the PHP cURL library`	
@@ -33,16 +33,16 @@
 			--	Provide way to choose best result
 			--	How to display choices
 		.-	Stylize
-	---	Add books to database
+	.---	Add books to database
 		.---	Determine attributes to save to database: Basic info (title, author) and selfLink in order to see more info?
 		.---	Create Button on interface
 		.---	Write script to save items into database
 		.---	Create a success notification
 			- Go to library link
-		---	Check for duplicates within database
+		.---	Check for duplicates within database
 			---	Select items from database
 			---	Return option for creating entry or increasing copies
-	-	Separate volumeInfo category: For possible use with searching or linking? `Unsure`
+	.-	Separate volumeInfo category: For possible use with searching or linking? `Unsure`
 			.-	title
 			.-	authors
 			-	subtitle
@@ -52,6 +52,21 @@
 			-	publishedDate
 			-	maturityRating
 			.-	imageLinks
+---- 	Teacher View
+	----	Add form for inputing book
+		----	author
+		----	title
+		----	isbn
+		----	copies
+		---	self_link
+		---	description
+	---	Get list of books from local DB search
+		---	Author & Title
+		---	ISBN
+		---	Description
+		--	Add ability to update the information
+
+
 
 --	Student View
 	--	Write mySQL queries
