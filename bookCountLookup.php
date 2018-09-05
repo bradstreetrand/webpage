@@ -39,4 +39,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	} else {
 			echo "0";
 		}
+
+// Close connection
+mysqli_close($link);
 ?>

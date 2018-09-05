@@ -40,8 +40,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 	}
 
 	echo $title . $author . $isbn . $description . $thumbnail . $self_link;
+ 	// Close statement
+	 mysqli_stmt_close($stmt);
 } else {
 	echo "No POST data";
 }
 
+// Close connection
+mysqli_close($link);
 ?>

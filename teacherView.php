@@ -13,11 +13,15 @@
 
 <div class="grid-x callout">
 	<h1>Search Books</h1>
+	<!-- Form for searching database using Full-Text search
+		 Calls fullTextSearch() -->
 	<div class="large-4 cell">
-		<p>Enter ISBN number</p>
-		<input type="text" name="isbn" id="isbnSearch" />
-		<input type="button" name="isbnSearchInput" onclick="isbnSearchLocal('ISBN:' + document.getElementById('isbnSearchInput').value)" value="Search by ISBN"/>
+		<p>Full Text Search</p>
+		<input type="text" name="fulltextsearchinput" id="fulltextsearchinput" />
+		<input type="button" name="fulltextsearchbutton" onclick="fullTextSearch(document.getElementById('fulltextsearchinput').value)" value="Perform Search"/>
 	</div>
+	<!-- Form for searching by author and title
+		 Calls authorTitleSearchLocal() -->
 	<div class="large-4 cell">
 		<p>Enter Author & Title</p>
 		<form>
@@ -27,6 +31,7 @@
 		<input type="button" name="authorSearch" onclick="authorTitleSearchLocal(document.getElementById('authorSearchInput').value , document.getElementById('titleSearchInput').value )" value="Search by Author & Title"/>
 	</div>
 </div>
+<!-- Location for search results -->
 <div class="grid-x gri-margin-x grid-padding-x">
 	<div id="searchResults0" class="cell medium-6 large-4 ">
 		<p>Results will appear here.</p>
@@ -80,23 +85,31 @@
 			});
 		}
 
-		// Uses input fields to enter into book database
-		// Sends POST request to inputNewBook.php - returns string
-		// Called from "authorsearch"
-		function inputNewBook(author, title, isbn, description, thumbnail, self_link) {
+		// Uses input field to search database to find book
+		// Sends POST request to fulltextsearch.php - returns string
+		// Called from "fulltextsearchbutton"
+		function fullTextSearch(fulltextsearchstring) {
 			$.ajax({
 				type: "POST",
-				url: "inputNewBook.php",
+				url: "fulltextsearch.php",
 				data: {
-					author: author,
-					title: title,
-					isbn: isbn,
-					description: description,
-					thumbnail: thumbnail,
-					self_link: self_link
+					fulltextsearchstring: fulltextsearchstring
 				},
 				success: function(result){
-					$("#messageBlock").html(result)
+					var resultArray = JSON.parse(result);
+					var arrayLength = resultArray.length;
+					var messageHTML = "";
+					for (var i = 0; i < arrayLength; i++){
+						messageHTML += "<div class = 'callout'><div class='media-object'><div class='media-object-section' <div class='thumbnail'><img src="
+						+ resultArray[i]["thumbnail"] + "></div><div class='media-object-section text-center'> <h2>"
+						+ resultArray[i]["title"] + " </h2><h3 class='subheader'>"
+						+ resultArray[i]["author"] + "</h3></div></div></div><div>" 
+						+ resultArray[i]["description"] + "<div>ISBN: "
+						+ resultArray[i]["isbn"] + "</div></div><div>Current count in library: <span class='stat'>"
+						+ resultArray[i]["copies"] + "</span></div>";
+					}
+					$("#messageBlock").html(messageHTML);
+					//}
 				}
 			});
 		}
