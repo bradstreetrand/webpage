@@ -6,36 +6,61 @@ require_once 'config.php';
 $book = $_POST['bookNumber'];
 $student = $_POST['studentNumber'];
 
+// Check if studentNumber is filled
+if($student == 0){
+	echo "<div class='callout alert'>Please choose a student</div>";
+} else {
+
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
-	
-	// Prepare an INSERT sql statement
-	$sql = "INSERT INTO reading_log SET book = ? , student = ? , start = CURDATE() ";
+	// Prepare an UPDATE sql statement 
+	$sql0 = "UPDATE book SET copies = copies - 1 WHERE book = ?";
 
-	if($stmt = mysqli_prepare($link, $sql)){
-		
+	if ($stmt0 = mysqli_prepare($link, $sql0)) {
 		// Bind variables to the prepared statement as parameters
-			mysqli_stmt_bind_param($stmt, 'ss', $book, $student);
-        
+		mysqli_stmt_bind_param($stmt0, 'i', $book);
+	        
         // Set parameters
-			$param_book = $book;
-			$param_student = $student;
+		$param_book = $book;
 
 		// Attempt to execute the prepared statement
-		if(mysqli_stmt_execute($stmt)){
-			echo 'Reading Log Inputted Successfully';
+		if(mysqli_stmt_execute($stmt0)){
+	
+			// Prepare an INSERT sql statement
+			$sql = "INSERT INTO reading_log SET book = ? , student = ? , start = CURDATE()";
+
+			if($stmt = mysqli_prepare($link, $sql)){
+				
+				// Bind variables to the prepared statement as parameters
+					mysqli_stmt_bind_param($stmt, 'ss', $book, $student);
+		        
+		        // Set parameters
+					$param_book = $book;
+					$param_student = $student;
+
+				// Attempt to execute the prepared statement
+				if(mysqli_stmt_execute($stmt)){
+					echo 'Reading Log Inputted Successfully';
+				} else {
+					echo "Execute failure " . mysqli_error($link);
+				}
+			} else {
+				echo "SQL statement 1 not prepared " . mysqli_error($link);
+			}
 		} else {
-			echo "Execute failure" . mysqli_error($link);
+			echo "Execute failure " . mysqli_error($link);
 		}
-	} else {
-		echo "SQL statement not prepared";
+	}  else {
+		echo "SQL statement 0 not prepared " . mysqli_error($link);
 	}
 
-	echo $book . $student;
+	echo "</div><div><a class='button' href='studentPageTeacher.php?student=" . $student . "'>Go to student page</a></div>";
  	// Close statement
 	 mysqli_stmt_close($stmt);
 } else {
 	echo "No POST data";
+}
+
 }
 
 // Close connection
