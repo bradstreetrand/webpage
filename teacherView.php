@@ -86,7 +86,7 @@
 		}
 
 		// Uses input field to search database to find book
-		// Sends POST request to fulltextsearch.php - returns string
+		// Sends POST request to fulltextsearch.php - returns JSON formatted string
 		// Called from "fulltextsearchbutton"
 		function fullTextSearch(fulltextsearchstring) {
 			$.ajax({
@@ -103,13 +103,41 @@
 						messageHTML += "<div class = 'callout'><div class='media-object'><div class='media-object-section' <div class='thumbnail'><img src="
 						+ resultArray[i]["thumbnail"] + "></div><div class='media-object-section text-center'> <h2>"
 						+ resultArray[i]["title"] + " </h2><h3 class='subheader'>"
-						+ resultArray[i]["author"] + "</h3></div></div></div><div>" 
+						+ resultArray[i]["author"] + "</h3><div class='grid-x'><div class='cell small-4' id='studentDropDown" + i + "'></div><div class='cell small-4'><button name='newReadingLogButton' class='button warning' onclick='newReadingLog(" 
+						+ resultArray[i]["book"] + ", "
+						+ i + ")'>Add to Reading Log</button></div><div id='newReadingLogMessage"
+						+ i + "'></div></div></div></div></div><div>" 
 						+ resultArray[i]["description"] + "<div>ISBN: "
 						+ resultArray[i]["isbn"] + "</div></div><div>Current count in library: <span class='stat'>"
 						+ resultArray[i]["copies"] + "</span></div>";
 					}
 					$("#messageBlock").html(messageHTML);
-					//}
+					$(function(){
+						
+						for (var i = 0; i < arrayLength; i++){
+							$("#studentDropDown"+i).load("studentdropdown.php");
+						}
+					});
+				}
+			});
+		}
+
+		// Adds new reading log entry using book # and student #
+		// Sends POST request to newReadingLog.php - returns string
+		// Called from "newReadingLogButton" created by fullTextSearch
+		// Requires INT for bookNumber and INT for studentNumber and INT for i
+		function newReadingLog(bookNumber, i){
+			studentNumber = document.getElementById("studentDropDown" + i ).getElementsByClassName("studentDropDown")[0].selectedIndex;
+
+			$.ajax({
+				type: "POST",
+				url: "newReadingLog.php",
+				data: {
+					studentNumber: studentNumber,
+					bookNumber: bookNumber
+				},
+				success: function(result){
+					$("#newReadingLogMessage"+i).html(result);
 				}
 			});
 		}
