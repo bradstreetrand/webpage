@@ -113,10 +113,17 @@
 					}
 					$("#messageBlock").html(messageHTML);
 					$(function(){
+						$.ajax({
+							type: "GET",
+							url: "studentdropdown.php",
+							success: function(result){
+								studentDropDown = result;
+								for (var i = 0; i < arrayLength; i++){
+									$("#studentDropDown"+i).html(studentDropDown);
+								}
+							}
+						})
 						
-						for (var i = 0; i < arrayLength; i++){
-							$("#studentDropDown"+i).load("studentdropdown.php");
-						}
 					});
 				}
 			});
