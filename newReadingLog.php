@@ -40,6 +40,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
 				// Attempt to execute the prepared statement
 				if(mysqli_stmt_execute($stmt)){
+					// Returns button for viewing student page and a string acknowleding successful input
+					echo "</div><div><a class='button' href='studentPageTeacher.php?student=" . $student . "'>Go to student page</a></div>";
 					echo 'Reading Log Inputted Successfully';
 				} else {
 					echo "Execute failure " . mysqli_error($link);
@@ -47,6 +49,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			} else {
 				echo "SQL statement 1 not prepared " . mysqli_error($link);
 			}
+		// Close statement
+	 	mysqli_stmt_close($stmt);
 		} else {
 			echo "Execute failure " . mysqli_error($link);
 		}
@@ -54,9 +58,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 		echo "SQL statement 0 not prepared " . mysqli_error($link);
 	}
 
-	echo "</div><div><a class='button' href='studentPageTeacher.php?student=" . $student . "'>Go to student page</a></div>";
- 	// Close statement
-	 mysqli_stmt_close($stmt);
+
 } else {
 	echo "No POST data";
 }

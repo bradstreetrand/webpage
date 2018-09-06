@@ -103,9 +103,12 @@
 						messageHTML += "<div class = 'callout'><div class='media-object'><div class='media-object-section' <div class='thumbnail'><img src="
 						+ resultArray[i]["thumbnail"] + "></div><div class='media-object-section text-center'> <h2>"
 						+ resultArray[i]["title"] + " </h2><h3 class='subheader'>"
-						+ resultArray[i]["author"] + "</h3><div class='grid-x'><div class='cell small-4' id='studentDropDown" + i + "'></div><div class='cell small-4'><button name='newReadingLogButton' class='button warning' onclick='newReadingLog(" 
+						+ resultArray[i]["author"] + "</h3><div class='grid-x'><div class='cell small-4' id='studentDropDown" + i + "'></div><div class='cell small-4'><button name='newReadingLogButton' class='button success' onclick='newReadingLog(" 
 						+ resultArray[i]["book"] + ", "
-						+ i + ")'>Add to Reading Log</button></div><div id='newReadingLogMessage"
+						+ i + ")'>Add to Reading Log</button></div><div class='cell small-4'><button name='finishedReadingLogButton' class='button alert' onclick='finishedReadingLog(" 
+						+ resultArray[i]["book"] + ", "
+						+ i + ")'>Finished Reading</button><select id='bookRatingDropDown" 
+						+ i + "'><option value='0'>Rating</option><option value='1'>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select></div><div id='ReadingLogMessage"
 						+ i + "'></div></div></div></div></div><div>" 
 						+ resultArray[i]["description"] + "<div>ISBN: "
 						+ resultArray[i]["isbn"] + "</div></div><div>Current count in library: <span class='stat'>"
@@ -135,7 +138,7 @@
 		// Requires INT for bookNumber and INT for studentNumber and INT for i
 		function newReadingLog(bookNumber, i){
 			studentNumber = document.getElementById("studentDropDown" + i ).getElementsByClassName("studentDropDown")[0].selectedIndex;
-
+			
 			$.ajax({
 				type: "POST",
 				url: "newReadingLog.php",
@@ -144,9 +147,33 @@
 					bookNumber: bookNumber
 				},
 				success: function(result){
-					$("#newReadingLogMessage"+i).html(result);
+					$("#ReadingLogMessage"+i).html(result);
 				}
 			});
+		}
+
+		// Closes out reading log entry using book #, student #, and rating
+		// Sends POST request to finishedReadingLog.php - returns string
+		// Called from "finishedReadingLogButton" created by fullTextSearch
+		// Requires INT for bookNumber and INT for studentNumber and INT for i and INT for rating
+		function finishedReadingLog(bookNumber, i){
+			// Sets studentNumber and rating from the drop down menus
+			studentNumber = document.getElementById("studentDropDown" + i ).getElementsByClassName("studentDropDown")[0].selectedIndex;
+			rating = document.getElementById("bookRatingDropDown" + i).selectedIndex;
+
+			$.ajax({
+				type: "POST",
+				url: "finishedReadingLog.php",
+				data: {
+					studentNumber: studentNumber,
+					bookNumber: bookNumber,
+					rating: rating
+				},
+				success: function(result){
+					$("#ReadingLogMessage"+i).html(result);
+				}
+			})
+
 		}
 
 	</script>
