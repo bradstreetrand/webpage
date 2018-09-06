@@ -52,20 +52,22 @@
 			-	publishedDate
 			-	maturityRating
 			.-	imageLinks
----- 	Teacher View
-	----	Add form for inputing book
+- 	Teacher View
+	.----	Add form for inputing book
 		----	author
 		----	title
 		----	isbn
 		----	copies
 		---	self_link
 		---	description
-	---	Get list of books from local DB search
+	.---	Get list of books from local DB search
 		---	Author & Title
 		---	ISBN
 		---	Description
 		--	Add ability to update the information
-
+	--	Add ability to see who has checked out book
+	-	See all checked out books
+		- Sort by student
 
 
 --	Student View

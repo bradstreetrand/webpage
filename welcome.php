@@ -1,4 +1,7 @@
 <?php
+// Include config file
+require_once 'config.php';
+
 // Initialize the session
 session_start();
  
@@ -7,22 +10,80 @@ if(!isset($_SESSION['username']) || empty($_SESSION['username'])){
   header("location: login.php");
   exit;
 }
+
+ // Define variables and initialize with SESSION values
+    $username = $_SESSION['username'];
+    
+    // Prepare a select statement
+    $sql = "SELECT student FROM student WHERE username = ?";
+
+        if($stmt = mysqli_prepare($link, $sql)){
+            
+            // Bind variables to the prepared statement as parameters
+                mysqli_stmt_bind_param($stmt, 's', $param_username);
+            
+            // Set parameters
+                $param_username = $username;
+            
+            // Attempt to execute the prepared statement
+            if(mysqli_stmt_execute($stmt)){
+                // Bind variables to prepared statement
+                mysqli_stmt_bind_result($stmt, $col1);
+                // Fetches results
+                $result = mysqli_stmt_fetch($stmt);
+                $student = $col1
+                // Returns student number
+                echo "Student Number:" . $student;
+
+                $sql1 = "SELECT book.title, book.author, book.thumbnail, book.description, reading_log.start, reading_log.finish, reading_log.rating FROM student INNER JOIN reading_log ON student.student = reading_log.student INNER JOIN book ON reading_log.book = book.book WHERE student.student = ?"
+                if ($stmt1 = mysqli_prepare($link, $sql1)) {
+                    // Bind variables to the prepared statement as parameters
+                    mysqli_stmt_bind_param($stmt1, 'i', $param_student);
+            
+                    // Set parameters
+                    $param_student = $student;
+
+                    // Attempt to execute the prepared statement
+                    if(mysqli_stmt_execute($stmt1)){
+                        // Bind variables to prepared statement
+                        mysqli_stmt_bind_result($stmt1, $col1, $col2, $col3, $col4, $col5, $col6, $col7);
+                        // Fetches results
+                        $result = mysqli_stmt_fetch($stmt);
+
+                }
+
+            } else {
+                echo "SQL statement not executed";
+            }
+        } else {
+            echo "SQL statement not prepared";
+        }
+        // Close statement
+        mysqli_stmt_close($stmt);
+
 ?>
+
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students of Bradstreet Rand</title>
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/app.css">
+  </head>
+ <body>
  
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Welcome</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <style type="text/css">
-        body{ font: 14px sans-serif; text-align: center; }
-    </style>
-</head>
-<body>
-    <div class="page-header">
-        <h1>Hi, <b><?php echo htmlspecialchars($_SESSION['username']); ?></b>. Welcome to our site.</h1>
-    </div>
-    <p><a href="logout.php" class="btn btn-danger">Sign Out of Your Account</a></p>
+ <?php
+
+ ?>
+
+ <!-- Javascript -->
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/vendor/what-input.js"></script>
+    <script src="js/vendor/foundation.js"></script>
+    <script src="js/app.js"></script>
+
 </body>
 </html>
