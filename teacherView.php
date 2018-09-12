@@ -111,7 +111,8 @@
 						+ i + "'><option value='0'>Rating</option><option value='1'>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option><option value='5'>5</option></select></div><div id='ReadingLogMessage"
 						+ i + "'></div></div></div></div></div><div>" 
 						+ resultArray[i]["description"] + "<div>ISBN: "
-						+ resultArray[i]["isbn"] + "</div></div><div>Current count in library: <span class='stat'>"
+						+ resultArray[i]["isbn"] + "</div>" 
+						+ resultArray[i]["score"] + "</div><div>Current count in library: <span class='stat'>"
 						+ resultArray[i]["copies"] + "</span></div>";
 					}
 					$("#messageBlock").html(messageHTML);
