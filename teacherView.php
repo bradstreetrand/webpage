@@ -32,7 +32,7 @@
 	</div>
 </div>
 <!-- Location for search results -->
-<div class="grid-x gri-margin-x grid-padding-x">
+<div class="grid-x grid-margin-x grid-padding-x">
 	<div id="searchResults0" class="cell medium-6 large-4 ">
 		<p>Results will appear here.</p>
 	</div>
