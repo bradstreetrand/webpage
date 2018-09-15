@@ -20,83 +20,120 @@ require_once 'config.php';
 		
 	</div>
 </div>
-<div id="selection" class="grid-x">
-	<div class="cell">
-		<?php 
-		// Creates a drop down list from all students in student database
-			// Prepare a select statement
-				$sql = "SELECT student, first_name, last_name FROM student";
+<div class="grid-container">
+	<div id="selection" class="grid-x">
+		<div class="cell small-4">
+			<?php 
+			// Creates a drop down list from all students in student database
+				// Prepare a select statement
+					$sql = "SELECT student, first_name, last_name FROM student";
 
-				if($stmt = mysqli_prepare($link, $sql)){
-					
-					// Attempt to execute the prepared statement
-					if(mysqli_stmt_execute($stmt)){
-						// Bind variables to prepared statement
-						mysqli_stmt_bind_result($stmt, $col1, $col2, $col3);
+					if($stmt = mysqli_prepare($link, $sql)){
 						
-						// Begins HTML string for return
-						$dropDownHTML = "<select id='studentDropdown'><option value='undefined'>Who are you?</option>";
+						// Attempt to execute the prepared statement
+						if(mysqli_stmt_execute($stmt)){
+							// Bind variables to prepared statement
+							mysqli_stmt_bind_result($stmt, $col1, $col2, $col3);
+							
+							// Begins HTML string for return
+							$dropDownHTML = "<select id='studentDropdown'><option value='undefined'>Who are you?</option>";
 
-						// Adds options to the HTML String by assigning results from sql results
-						while ($result = mysqli_stmt_fetch($stmt)) {
-							$dropDownHTML .= "<option value='";
-							$dropDownHTML .= $col2;
-							$dropDownHTML .= " ";
-							$dropDownHTML .= $col3;
-							$dropDownHTML .= "'>";
-							$dropDownHTML .= $col2;
-							$dropDownHTML .= " ";
-							$dropDownHTML .= $col3;
-							$dropDownHTML .= "</option>";
-						};
+							// Adds options to the HTML String by assigning results from sql results
+							while ($result = mysqli_stmt_fetch($stmt)) {
+								$dropDownHTML .= "<option value='";
+								$dropDownHTML .= $col2;
+								$dropDownHTML .= " ";
+								$dropDownHTML .= $col3;
+								$dropDownHTML .= "'>";
+								$dropDownHTML .= $col2;
+								$dropDownHTML .= " ";
+								$dropDownHTML .= $col3;
+								$dropDownHTML .= "</option>";
+							};
 
-						// Closes HTML string
-						$dropDownHTML .= "</select>";
+							// Closes HTML string
+							$dropDownHTML .= "</select>";
 
-						// Returns HTML string
-						echo $dropDownHTML;
+							// Returns HTML string
+							echo $dropDownHTML;
+						} else {
+							echo "SQL statement not executed";
+						}
 					} else {
-						echo "SQL statement not executed";
+						echo "SQL statement not prepared";
 					}
-				} else {
-					echo "SQL statement not prepared";
-				}
-				// Close statement
-				mysqli_stmt_close($stmt);
-		?>
-	</div>
-	<div class="cell">
-		<select id="locationDropdown">
-			<option value="bathroom" selected="selected">Bathroom</option>
-			<option value="errand">Teacher Errand</option>
-			<option value="break">Walking Break</option>
-			<option value="other">Other</option>
-		</select>
-	</div>
-	<div id="leaveClass" class="cell">
-		<input type="button" name="leaveClass" onclick="leaveClass(document.getElementById('studentDropdown').value , document.getElementById('locationDropdown').value )" value="Leave the Classroom"/>
+					// Close statement
+					mysqli_stmt_close($stmt);
+			?>
+		</div>
+		<div class="cell small-4">
+			<select id="locationDropdown">
+				<option value="bathroom" selected="selected">Bathroom</option>
+				<option value="errand">Teacher Errand</option>
+				<option value="break">Walking Break</option>
+				<option value="other">Other</option>
+			</select>
+		</div>
+		<div id="leaveClass" class="cell">
+			<input type="button" name="leaveClass" onclick="leaveClass(document.getElementById('studentDropdown').value , document.getElementById('locationDropdown').value )" value="Leave the Classroom"/>
+		</div>
 	</div>
 </div>
 	<script type="text/javascript">
-		// Adds new classroom signout row
+		// Adds new classroom signout row and places callout with name and location
 		// Sends POST info to leaveClassroom.php
 		// Requires student number and location string
 		// Called by "leaveClass" button
 		function leaveClass(student, location){
-			$("#status").html(student);
+			condensedstudent = student.replace(/\s+/g, '');
+			var a = document.getElementById(condensedstudent)
+			if (a) {
+				window.alert("Student is already out");
+			} else {
+				$.ajax({
+					type: "POST",
+					url: "leaveClassroom.php",
+					data: {
+						student: student,
+						location: location
+					},
+					success: function(result){
+						//var z = document.createElement('div');
+						//z.innerHTML = result;
+						//document.getElementById('status').appendChild(z);
+						$('#status').append(result);
+						timer = setTimeout(yellow, 300000, condensedstudent);
+					}
+				});
+			}
+		}
 
+		// Removes callout from DOM and inserts retunr time
+		// Sends POST info to returnClassroom.php
+		// Requires student 
+		// Called by "returnClassroom" button
+		function returnClassroom(student){
 			$.ajax({
 				type: "POST",
-				url: "leaveClassroom.php",
+				url: "returnClassroom.php",
 				data: {
-					student: student,
-					location: location
+					student: student
 				},
 				success: function(result){
-					var statusLocation = document.getElementById('status');
-					statusLocation.insertAdjacentHTML('beforeend', result);
+					z = "#" + result;
+
+					$(z).remove();
+					
 				}
 			});
+		}
+
+
+		function yellow(condensedstudent){
+			z = "#" + condensedstudent;
+			$(z).append(z);
+			document.getElementById(condensedstudent).classList.remove('primary');
+			document.getElementById(condensedstudent).classList.add('alert');
 		}
 	</script>
     <script src="js/vendor/jquery.js"></script>
