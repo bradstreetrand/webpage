@@ -11,75 +11,7 @@ if(!isset($_SESSION['username']) || empty($_SESSION['username'])){
   exit;
 }
 
- // Define variables and initialize with SESSION values
-    $username = $_SESSION['username'];
-    
-    // Prepare a select statement
-    $sql = "SELECT student FROM student WHERE username = ?";
-
-        if($stmt = mysqli_prepare($link, $sql)){
-            
-            // Bind variables to the prepared statement as parameters
-                mysqli_stmt_bind_param($stmt, 's', $param_username);
-            
-            // Set parameters
-                $param_username = $username;
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Bind variables to prepared statement
-                mysqli_stmt_bind_result($stmt, $col1);
-                // Fetches results
-                $result = mysqli_stmt_fetch($stmt);
-                $student = $col1;
-                // Returns student number
-                echo "Student Number:" . $student;
-
-                // Close statement
-                mysqli_stmt_close($stmt);
-
-                $sql1 = "SELECT book.title, book.author, book.thumbnail, book.description, reading_log.start, reading_log.finish, reading_log.rating FROM student INNER JOIN reading_log ON student.student = reading_log.student INNER JOIN book ON reading_log.book = book.book WHERE student.student = ?";
-                if ($stmt1 = mysqli_prepare($link, $sql1)) {
-                    // Bind variables to the prepared statement as parameters
-                    mysqli_stmt_bind_param($stmt1, 'i', $param_student);
-            
-                    // Set parameters
-                    $param_student = $student;
-
-                    // Attempt to execute the prepared statement
-                    if(mysqli_stmt_execute($stmt1)){
-                        // Bind variables to prepared statement
-                        mysqli_stmt_bind_result($stmt1, $col1, $col2, $col3, $col4, $col5, $col6, $col7);
-                        // Fetches results
-                        $result = mysqli_stmt_fetch($stmt1);
-
-                        while ($result1 = mysqli_stmt_fetch($stmt1)) {
-                            $searchResult[] =  ["title" => $col1, "author" => $col2, "thumbnail" => $col3, "description" => $col4, "start" => $col5, "finish" => $col6, "rating" => $col7];
-                        }
-                        
-                        foreach ($searchResult as $book) {
-                            echo "</br>" . $book["title"] . $book["author"] . $book["thumbnail"] . $book["description"] . $book["start"] . $book["finish"] . $book["rating"] . "</br>";
-                        }
-
-                        // Close statement
-                        mysqli_stmt_close($stmt1);
-                    } else {
-                        echo "SQL statement 1 not executed" . mysqli_error($link);
-                    }
-                } else {
-                    echo "SQL statement 1 not prepared" . mysqli_error($link);
-                }
-            } else {
-                echo "SQL statement not executed" . mysqli_error($link);
-            }
-        } else {
-            echo "SQL statement not prepared" . mysqli_error($link);
-        }
-        
-
-// Close connection
-mysqli_close($link);
-
+include "studentCheckedOutBookSearch.php";
 ?>
 
 <!doctype html>
@@ -90,19 +22,103 @@ mysqli_close($link);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Students of Bradstreet Rand</title>
     <link rel="stylesheet" href="css/foundation.css">
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" type="text/css" href="vendor/DataTables/datatables.css">
+    <link rel="stylesheet" type="text/css" href="css/library.css">
   </head>
- <body>
- 
- <?php
+<body>
+    <div data-sticky-container>
+      <div class="title-bar" data-sticky data-options="marginTop:0;" style="width:100%">
+        <div class="title-bar-left">
+            <ul class="menu align-left">
+              <li><a style="color: #FFFFFFFF"><?php echo $firstName . " " . $lastName; ?></a></li>
+              <li><a href="#">Check Out a Book</a></li>
+              <li><a href="#">Return a Book</a></li>
+              <li><a href="#">Find a Book</a></li>
+            </ul>
+        </div>
+        <div class=" grid-x align-right">
+            <input class="cell small-8" type="text" name="fulltextsearchinput" id="fulltextsearchinput" placeholder="Search For a Book" />
+            <a style="margin-left:1rem" class="button" onclick="fullTextSearch(document.getElementById('fulltextsearchinput').value)">Search</a>
+        </div>
+      </div>
+    </div>
 
- ?>
+<ul class="accordion" data-accordion>
+  <li class="accordion-item " data-accordion-item>
+    <!-- Accordion tab title -->
+    <a href="#" class="accordion-title">Accordion 1</a>
+
+    <!-- Accordion tab content: it would start in the open state due to using the `is-active` state class. -->
+    <div class="accordion-content" data-tab-content>
+      <p>Panel 1. Lorem ipsum dolor</p>
+      <a href="#">Nowhere to Go</a>
+    </div>
+  </li>
+  <!-- ... -->
+</ul>
+
+<div>
+    <?php //print_r($studentCheckedOutBooks) ?>
+</div>
+ <div id="json">
+ </div>
+
+<table id="myTable" class="display" style="word-wrap:break-word;">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Description</th>
+            <th>start</th>
+            <th>finish</th>
+            <th>rating</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Description</th>
+            <th>start</th>
+            <th>finish</th>
+            <th>rating</th>
+        </tr>      
+    </tfoot>
+</table>
+
+
+        
+    </div>
 
  <!-- Javascript -->
     <script src="js/vendor/jquery.js"></script>
-    <script src="js/vendor/what-input.js"></script>
     <script src="js/vendor/foundation.js"></script>
+    <script src="vendor/DataTables/datatables.js"></script>
     <script src="js/app.js"></script>
+    <script type="text/javascript">
+        var dataSet = <?php echo json_encode($studentCheckedOutBooks);?>;
+        //$("#json").html(dataSet);
 
+        //var data = "<?php $array = [1,2,3,4,5]; json_encode($array)?>"
+
+        $(document).ready(function() {
+            $('#myTable').DataTable( {
+                scrollY: 600,
+                scrollCollapse: true,
+                data: dataSet,
+                autoWidth: false,
+                columns: [
+                    {data: 'title', width: '20%'},
+                    {data: 'author', width: '10%'},
+                    {data: 'description', width: '55%'},
+                    {data: 'start', width: '5%'},
+                    {data: 'finish', width: '5%'},
+                    {data: 'rating', width: '5%'},
+                ],
+               
+            });
+        } );
+
+    </script>
 </body>
 </html>

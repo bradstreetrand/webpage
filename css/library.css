@@ -1,0 +1,21 @@
+.title-bar {
+    display: flex;
+    justify-content: flex-start;
+    background: rgb(64, 64, 64);	
+}
+
+.title-bar * {
+	    margin: 0rem;
+}
+
+.title-bar a{
+	color: rgb(192, 192, 192);
+}
+
+.title-bar #studentName {
+	padding-top: 0.7rem;
+    padding-right: 1rem;
+    padding-bottom: 0.7rem;
+    padding-left: 1rem;
+}
+
