@@ -30,7 +30,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 					// Execute sql statement
 					if(mysqli_stmt_execute($stmt1)){
 			            // Return success
-						echo "</div><div><a class='button' href='studentPageTeacher.php?student=" . $student . "'>Go to student page</a></div>";
 						echo "<div> Success! Book returned.</div>";
 			           } else {
 			           	echo "<div class='callout alert'> Statement 1 Execute failure". mysqli_error($link) . "</div>";

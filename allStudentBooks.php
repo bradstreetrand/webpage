@@ -49,7 +49,7 @@ require_once 'config.php';
                         $result = mysqli_stmt_fetch($stmt1);
 
                         while ($result1 = mysqli_stmt_fetch($stmt1)) {
-                            $studentCheckedOutBooks[] =  ["title" => $col1, "author" => $col2, "thumbnail" => $col3, "description" => $col4, "start" => $col5, "finish" => $col6, "rating" => $col7];
+                            $allStudentBooks[] =  ["title" => $col1, "author" => $col2, "thumbnail" => $col3, "description" => $col4, "start" => $col5, "finish" => $col6, "rating" => $col7];
                         }
 
                         
@@ -75,6 +75,4 @@ require_once 'config.php';
         }
         
 
-// Close connection
-mysqli_close($link);
 ?>

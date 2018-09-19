@@ -6,6 +6,7 @@
     <title>Bradstreet Rand</title>
     <link rel="stylesheet" href="css/foundation.css">
     <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" type="text/css" href="css/library.css">
   </head>
 
 <body>
