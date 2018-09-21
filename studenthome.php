@@ -1,22 +1,23 @@
 <?php
-// Include config file
-require_once 'config.php';
+    // Include config file
+    require_once 'config.php';
 
-// Initialize the session
-session_start();
- 
-// If session variable is not set it will redirect to login page
-if(!isset($_SESSION['username']) || empty($_SESSION['username'])){
-  header("location: login.php");
-  exit;
-}
+    // Initialize the session
+    session_start();
+     
+    // If session variable is not set it will redirect to login page
+    if(!isset($_SESSION['username']) || empty($_SESSION['username'])){
+      header("location: login.php");
+      exit;
+    }
 
-include "allStudentBooks.php";
-include "studentCurrentBooks.php";
+    include "allStudentBooks.php";
+    include "studentCurrentBooks.php";
 ?>
 
 <!doctype html>
 <html class="no-js" lang="en" dir="ltr">
+<!-- Head Info-->  
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -30,21 +31,19 @@ include "studentCurrentBooks.php";
   </head>
 
 <body>
-    <div id="Test"></div>
 <!-- Title Bar-->
-    <div data-sticky-container>
-      <div class="title-bar" data-sticky data-options="marginTop:0;" style="width:100%">
-        <div class="title-bar-left">
+    <div data-sticky-container id="topBar">
+      <div class="title-bar grid-x" data-sticky data-options="marginTop:0;" >
+        <div class="title-bar-left cell small-7">
             <ul class="menu align-left">
-              <li><a style="color: #FFFFFFFF"><?php echo $firstName . " " . $lastName; ?></a></li>
-              <li><a href="#">Check Out a Book</a></li>
-              <li><a href="#">Return a Book</a></li>
-              <li><a href="#">Find a Book</a></li>
+              <li><a style="color: #FFFFFFFF;"><?php echo $firstName . " " . $lastName; ?></a></li>
+              <li><a href="https://follett.franklinboe.org/cataloging/servlet/presentadvancedsearchredirectorform.do?l2m=Library%20Search&tm=TopLevelCatalog">Franklin Park School Library</a></li>
+              <li><a href="http://www.franklintwp.org">Franklin Township Library</a></li>
             </ul>
         </div>
-        <div class=" grid-x align-right">
-            <input class="cell small-8" type="text" name="fulltextsearchinput" id="fulltextsearchinput" placeholder="Search For a Book" />
-            <a style="margin-left:1rem" class="button" onclick="fullTextSearch(document.getElementById('fulltextsearchinput').value)">Search</a>
+        <div class="align-right cell small-5 grid-x">
+            <input class="call small-8" type="text" name="fulltextsearchinput" id="fulltextsearchinputTopBar" placeholder="Search For a Book" />
+            <a style="margin-left:1rem" class="button" onclick="fullTextSearch(document.getElementById('fulltextsearchinputTopBar').value)">Search</a>
         </div>
       </div>
     </div>
@@ -75,11 +74,16 @@ include "studentCurrentBooks.php";
         <button class="close-button" data-close aria-label="CLose modal" type="button"><span aria-hidden="true">&times;</span></button>
     </div>
 
+<!-- Results for book search-->
+    <div class="reveal" id="bookSearchResults" data-reveal>
+        
+    </div>
+
 <!-- Table for Current Books -->
-    <div id="currentBooksContainer" class="grid-x grid-margin-x card " style="padding-top: .5rem">
-        <div class="cell medium-offset-1 medium-10 card-section">
+    <div id="currentBooksContainer" class="grid-x grid-margin-x card">
+        <div class="cell  card-section" >
             <div class="card-divider">
-            <h2>Current Books</h2></div>
+            <h4>Current Books</h4></div>
             <div class="card-section">
             <table id="currentBooks" class="display hover" style="word-wrap:break-word;">
                 <thead>
@@ -98,9 +102,9 @@ include "studentCurrentBooks.php";
 
 <!-- Table for Reading Log -->
     <div id="readingLogContainer" class="grid-x grid-margin-x card">
-        <div class="cell medium-offset-1 medium-10 card-section">
+        <div class="cell card-section">
             <div class="card-divider">
-                <h2>All Books </br><h3 class='subheader' style="padding-top: .3rem; padding-left: .3rem">Your Full Reading Log</h3></h2>
+                <h4>All Books </br><h5 class='subheader' style="padding-top: .1rem; padding-left: .3rem">Your Full Reading Log</h5></h4>
             </div>
             <div class="card-section">
             <table id="readingLog" class="display hover" style="word-wrap:break-word;">
@@ -144,7 +148,62 @@ include "studentCurrentBooks.php";
         var student = <?php echo $student ?>;
         var selectedBook = "";
 
-    // Creates current books table by using DataTables with results from studentCurrentBooks.php
+    // fullTextSearch - Uses input field to search database to find book
+        // Sends POST request to fulltextsearch.php - returns JSON formatted string
+        // Called from "fulltextsearchbutton"
+        function fullTextSearch(fulltextsearchstring) {
+            $.ajax({
+                type: "POST",
+                url: "fulltextsearch.php",
+                data: {
+                    fulltextsearchstring: fulltextsearchstring
+                },
+                success: function(result){
+                    var resultArray = JSON.parse(result);
+                    var arrayLength = resultArray.length;
+                    var messageHTML = "";
+                    for (var i = 0; i < arrayLength; i++){
+                        messageHTML += "<div class = 'callout'><div class='media-object'><div class='media-object-section' <div class='thumbnail'><img src="
+                        + resultArray[i]["thumbnail"] + "></div><div class='media-object-section text-center'> <h2>"
+                        + resultArray[i]["title"] + " </h2><h3 class='subheader'>"
+                        + resultArray[i]["author"] + "</h3><div><button name='newReadingLogButton' class='button success' onclick='newReadingLog(" 
+                        + resultArray[i]["book"] + ")'>Add to Reading Log</button></div></div></div></div><div>" 
+                        + resultArray[i]["description"] + "<div>ISBN: "
+                        + resultArray[i]["isbn"] + "</div>" 
+                        + resultArray[i]["score"] + "</div><div>Current count in library: <span class='stat'>"
+                        + resultArray[i]["copies"] + "</span><div>";
+                    }
+                    messageHTML += "<button class='close-button' data-close aria-label='Close modal' type='button'><span aria-hidden='true'>&times;</span></button>";
+                    $("#bookSearchResults").html(messageHTML);
+                    $('#bookSearchResults').foundation('open');
+                }
+            });
+        }
+        
+    // newReadingLog - Adds new reading log entry using book # and student #
+        // Sends POST request to newReadingLog.php - returns string
+        // Called from "newReadingLogButton" created by fullTextSearch
+        // Requires INT for bookNumber 
+        function newReadingLog(bookNumber){
+            studentNumber = <?php echo $student ?>
+            
+            $.ajax({
+                type: "POST",
+                url: "newReadingLog.php",
+                data: {
+                    studentNumber: studentNumber,
+                    bookNumber: bookNumber
+                },
+                success: function(result){
+                    modalHTML = result;
+                    modalHTML += "<button class='close-button' onclick='location.reload()' data-close aria-label='Close modal' type='button'><span aria-hidden='true'>&times;</span></button>"
+                    $('#announcementModal').html(modalHTML);
+                    $('#announcementModal').foundation('open');
+                }
+            });
+        }
+
+    // DataTable - Creates current books table by using DataTables with results from studentCurrentBooks.php
         $(document).ready(function() {
             $('#currentBooks').DataTable( {
                 scrollY: 300,
@@ -160,7 +219,7 @@ include "studentCurrentBooks.php";
             });
         } );
 
-    // Creates reading log table by using DataTables with results from allStudentBooks.php
+    // DataTable - Creates reading log table by using DataTables with results from allStudentBooks.php
         $(document).ready(function() {
             $('#readingLog').DataTable( {
                 scrollY: 600,
@@ -177,9 +236,10 @@ include "studentCurrentBooks.php";
                 ],
                
             });
+
         } );
      
-    // Reveals left-sided off-canvas for student to rate the book
+    // returnBook - Reveals left-sided off-canvas for student to rate the book
         // Called from studentCurrentBooks.php
         // Requires book number and student number
         function returnBook(bookNumber, studentNumber){
@@ -199,7 +259,7 @@ include "studentCurrentBooks.php";
             $('#offCanvas').foundation('open', event);
         }
 
-    // Converts the select code into stars
+    // barrating - Converts the select code into stars
         $(function() {
             $('#bookRatingSelect').barrating({
                 theme: 'fontawesome-stars',
@@ -220,7 +280,7 @@ include "studentCurrentBooks.php";
                                 $('#offCanvas').foundation('close');
                                 modalHTML = result;
                                 modalHTML += " You have returned <em>" + selectedBook["title"] + "</em> by " + selectedBook["author"];
-                                modalHTML += "<button class='close-button' data-close aria-label='Close modal' type='button'><span aria-hidden='true'>&times;</span></button>"
+                                modalHTML += "<button class='close-button' onclick='location.reload()' data-close aria-label='Close modal' type='button'><span aria-hidden='true'>&times;</span></button>"
                                 $('#announcementModal').html(modalHTML);
                                 $('#announcementModal').foundation('open');
                             }

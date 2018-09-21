@@ -28,15 +28,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 			while ($result = mysqli_stmt_fetch($stmt)) {
 				$searchResult[] =  ["book" => $col1, "title" => $col2, "description" => $col3, "isbn" => $col4, "author" => $col5, "thumbnail" => $col6, "copies" => $col7, "self_link" => $col8, "score" => $col9];
 			}
-			// Orders results from high score to low score
-			function cmp($a, $b){
-				return ( $b["score"] > $a["score"]) ? -1 : 1;
-			}
 
-			usort($searchResult, "cmp");
-			$reversedArray = array_reverse($searchResult);
-			// Returns an encoded JSON object
-			echo json_encode($reversedArray);
+			if (empty($searchResult)) {
+				echo json_encode($searchString);
+			} else {
+
+				// Orders results from high score to low score
+				function cmp($a, $b){
+					return ( $b["score"] > $a["score"]) ? -1 : 1;
+				}
+
+				usort($searchResult, "cmp");
+				$reversedArray = array_reverse($searchResult);
+				// Returns an encoded JSON object
+				echo json_encode($reversedArray);
+			}
 		} else {
 			echo "SQL statement not executed";
 		}

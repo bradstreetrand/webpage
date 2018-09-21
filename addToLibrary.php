@@ -85,6 +85,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 							// ** Changes number of copies by 1
 							// Prepare an update statement
 								$sql = "UPDATE book SET copies = ? WHERE book = ?";
+								
 								if($stmt2 = mysqli_prepare($link, $sql)){
 									mysqli_stmt_bind_param($stmt2, 'ii', $param_copies, $param_book);
 									$copies = $duplicateCheck["copies"] + 1;

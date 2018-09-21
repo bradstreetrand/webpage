@@ -61,24 +61,30 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         }
     }
     
+    $first_name = $_POST["firstName"];
+    $last_name = $_POST["lastName"];
+
     // Check input errors before inserting in database
     if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
         
         // Prepare an insert statement
-        $sql = "INSERT INTO student (username, password) VALUES (?, ?)";
+        $sql = "INSERT INTO student (username, password, first_name, last_name) VALUES (?, ?, ?, ?)";
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
+            mysqli_stmt_bind_param($stmt, "ssss", $param_username, $param_password, $param_first_name, $param_last_name);
             
             // Set parameters
             $param_username = $username;
             $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+            $param_first_name = $first_name;
+            $param_last_name = $last_name;
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Redirect to login page
-                header("location: login.php");
+                //header("location: login.php");
+                echo "Student entered. </br> Username:" . $username . "</br>Name: " . $first_name . " " . $last_name;
             } else{
                 echo "Something went wrong. Please try again later.";
             }
@@ -123,6 +129,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 <label>Confirm Password</label>
                 <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>">
                 <span class="help-block"><?php echo $confirm_password_err; ?></span>
+            </div>
+            <div class="form-group">
+                <label>First Name</label>
+                <input type="text" name="firstName" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Last Name</label>
+                <input type="text" name="lastName" class="form-control">
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Submit">

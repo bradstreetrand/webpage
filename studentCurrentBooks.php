@@ -2,6 +2,7 @@
 // Include config file
 require_once 'config.php';
 
+
  // Define variables and initialize with SESSION values
     $username = $_SESSION['username'];
     
@@ -41,11 +42,16 @@ require_once 'config.php';
                     $param_student = $student;
                     // Attempt to execute the prepared statement
                     if(mysqli_stmt_execute($stmt1)){
+
                         // Bind variables to prepared statement
                         mysqli_stmt_bind_result($stmt1, $col1, $col2, $col3, $col4, $col5, $col6);
 
                         while ($result1 = mysqli_stmt_fetch($stmt1)) {
                             $studentCurrentBooks[] =  ["title" => $col1, "author" => $col2, "thumbnail" => $col3, "description" => $col4, "start" => $col5, "finished" => "<a id='book#" . $col6 . "' onclick='returnBook(" . $col6 . ", " . $student . ")' >Return this book</a>", "book" => $col6];
+                        }
+
+                        if (empty($studentCurrentBooks)) {
+                            $studentCurrentBooks[] =  ["title" => " ", "author" => " ", "thumbnail" => " ", "description" => " ", "start" => " ", "finished" => "<a href=#>Checkout a new book</a>", "book" => " "];
                         }
 
                         // Prints book details
